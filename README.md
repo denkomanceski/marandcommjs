@@ -1,14 +1,17 @@
-# MarandComm
-This is a small library that is used to interact with the Marand communication platform.
+# MarandCommJS
+This is a small js library that is used to interact with the Marand communication platform.
 
 * Required Dependencies: socket.io
+
+
+*Always include socket.io before including this library*
 
 
 Example of how to use it is under examples folder.
 
 #  API Reference
 
-- [`MarandComm SDK`](#xmppclient)
+- [`MarandCommJS`](#xmppclient)
   - [`new CommClient()`](#new-clientoptions)
   - [`CommClient.createClient(auth)`](#createclientoptions)
   - [`Client` Methods](#client-methods)
@@ -137,7 +140,7 @@ Query for tagged content messages. The messages are tagged if they contain a #ha
 
 Example:
 ```js
-this.client.queryContent('medrock')
+client.queryContent('medrock')
 ```
 #### `client.sendPresence(opts)`
 Send presence to the server.
@@ -155,8 +158,8 @@ Note the `session:started`. You'll need to send your presence immediately to get
 Fetches the jids from the roster for the current user. (Roster = friendlist)
 
 Example:
-```
- this.client.getRoster((err, data) => {
+```js
+client.getRoster((err, data) => {
     var roster = data.roster.items;
 })
 ```
@@ -184,7 +187,7 @@ client.configureRoom('conference.xxx.yyy.zz', fields, (err, data) => {
 
 Example for public room: <br>
 
- ```
+ ```js
  {name: 'FORM_TYPE', value: 'http://jabber.org/protocol/muc#roomconfig'},
  {name: 'muc#roomconfig_persistentroom', value: '1'} // The room is persistent (exists even there isnt any online members)
  ```
@@ -202,8 +205,8 @@ Example for private room:
 
 Example:
 
-```
-this.client.destroyRoom(room.jid, {
+```js
+client.destroyRoom(room.jid, {
     reason: 'Room destroyed by admin'
 }
 ```
@@ -212,8 +215,8 @@ this.client.destroyRoom(room.jid, {
 
 Example:
 
-```
-this.client.directInvite(room.jid, {
+```js
+client.directInvite(room.jid, {
     {to: 'xyz@comm.marand.si'}
 }
 
@@ -247,14 +250,14 @@ client.joinRoom('room@muc.example.com', 'User', {
 ##### `client.leaveRoom(room, nick, opts)`
 Example:
 ```js
- this.client.leaveRoom(roomJid, myJid);
+ client.leaveRoom(roomJid, myJid);
 ```
 > The first param is the jid from the room that you want to leave, the second is your client jid
 
 ##### `client.setRoomAffiliation(room, jid, affiliation, reason, [cb])`
 Example:
 ```js
-this.client.setRoomAffiliation(roomJid, memberJid, 'member', '', (err, data)=> {
+client.setRoomAffiliation(roomJid, memberJid, 'member', '', (err, data)=> {
 
 });
 ```
@@ -263,11 +266,11 @@ A member with `memberJid` can be a 'member', 'owner' or 'admin' of a room with `
 
 ##### `client.addBookmark(bookmark)`
 ```js
-this.client.addBookmark({
+client.addBookmark({
     jid: roomJid,
     autoJoin: autojoin || true,
     name: roomJid,
-    nick: this.me.name
+    nick: me.name
 })
 ```
 > Bookmark is a small storage where you can set some configuration for the room. Than, you are able to fetch that bookmark using `getBookmarks()`
@@ -276,8 +279,8 @@ this.client.addBookmark({
 > Get the bookmarks for the client.
 The bookmarks are stored in `data.privateStorage.bookmarks` in the callback object
 Example:
-```
-this.client.getBookmarks((err, data)=> {
+```js
+client.getBookmarks((err, data)=> {
     if (data.privateStorage.bookmarks.conferences) {
         var conferences = data.privateStorage.bookmarks.conferences;
 })
@@ -290,7 +293,7 @@ Set bundle of bookmarks at once.
 
 Example:
 ```js
-this.client.setBookmarks({conferences: [ARRAY_OF_BOOKMARKS]})
+client.setBookmarks({conferences: [ARRAY_OF_BOOKMARKS]})
 ```
 #### Message Syncing
 ##### `client.enableCarbons()`
@@ -323,8 +326,8 @@ The before property can also be a timestamp which you receive from a a previous 
 Gets a vCard for the user with the specified jid. It can contain phone numbers, user photo..
 
 Example:
-```
-this.client.getVCard(userJid, (err, vcard) => {
+```js
+client.getVCard(userJid, (err, vcard) => {
     vcard = vcard.vCardTemp;
     //Do something with the vcard..
 })
@@ -352,7 +355,7 @@ Here you receive the all the messages including the room messages.
 
 Example:
 ```js
-this.client.on('message', (msg) => {
+client.on('message', (msg) => {
         if (msg.type === 'groupchat' && msg.body) {
             //Do something with groupchat message
         }
@@ -391,4 +394,4 @@ client.on('presence', (presence) => {
 This event is fired when the session is started. Here you should fetch the roster, vcards, bookmarks, and most important is call `client.sendPresence()` to register and start receiving presence changes
 ### queryMetadata
 This event is fired after you query for tagged messages. Currently the messages are tagged if they contain a hashtag inside their body ('Hello #MedRock rocks'). You receive the full info for the message here.
-The messages are fetched with `this.client.queryContent(content);`
+The messages are fetched with `client.queryContent(content);`
