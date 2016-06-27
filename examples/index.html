@@ -1,0 +1,55 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+    <script src="../CommClient.js"></script>
+    <script>
+    var commClient = new window.CommClient();
+      var client = commClient.createClient({
+        jid: 'ales@comm.marand.si',
+        password: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE0NjAwMTY0NDQsImV4cCI6MTQ5MTU1NDEwMCwiYXVkIjoiIiwic3ViIjoiIiwidXNlcl9pZCI6ImFsZXMiLCJob3N0IjoiY29tbS5tYXJhbmQuc2kifQ.J-jLri5HVSqB0PHqNExYnEMJ0gu8jMZb0S9cPYjHogM'
+      })
+      client.on('session:started', function(){
+        client.on('presence', function(data){
+          console.log(data);
+        })
+        client.on('chat', function(data){
+          console.log(data);
+        })
+        client.on('chat', function(msg){
+          if(msg.body){
+              appendMessage(msg.from.bare, msg.body)
+          }
+
+        })
+        client.sendPresence();
+        alert("Session started. You are online")
+      })
+      function appendMessage(from, body){
+        var msgList = document.getElementById('msgList');
+        var newLI = document.createElement('li');
+        var element = newLI.appendChild(document.createTextNode('From: '+from+' Body: '+body));
+        msgList.appendChild(newLI);
+      }
+      function sendMessage(){
+        var to = document.getElementById('msgTo').value;
+        var body = document.getElementById('msgTxt').value;
+        console.log(body, to);
+        client.sendMessage({
+          to: to,
+          body: body,
+          type: 'chat'
+        })
+        appendMessage("Me", body);
+      }
+    </script>
+</head>
+<body>
+  <input type="text" placeholder="To" id="msgTo"/>
+  <input type="text" placeholder="Hello" id="msgTxt"/>
+  <button onclick="sendMessage()">Send message</button>
+
+  <ul id="msgList">
+
+  </ul>
+</body>
+</html>
