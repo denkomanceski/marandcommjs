@@ -279,6 +279,8 @@ client.addBookmark({
 > Get the bookmarks for the client.
 The bookmarks are stored in `data.privateStorage.bookmarks` in the callback object
 Example:
+
+
 ```js
 client.getBookmarks((err, data)=> {
     if (data.privateStorage.bookmarks.conferences) {
@@ -334,7 +336,6 @@ client.getVCard(userJid, (err, vcard) => {
 ```
 
 ## Events
-### carbon:received
 ### carbon:sent
 This event is called when a carbon is sent. For example a carbon is sent, if the user sends a message to another user from a different device, so all of his online devices will be in sync.
 ### chat
@@ -362,9 +363,6 @@ client.on('message', (msg) => {
     });
 })
 ```
-### message:error
-### message:sent
-### muc:available
 ### muc:invite
 This event is fired when someone invites you to join a room. The callback contains the details of the room, the reason..
 ### presence
