@@ -185,15 +185,15 @@ client.configureRoom('conference.xxx.yyy.zz', fields, (err, data) => {
 > The fields array contains the configuration for the room.
 
 
-Example for public room: <br>
+Example for public room fields: <br>
 
  ```js
  {name: 'FORM_TYPE', value: 'http://jabber.org/protocol/muc#roomconfig'},
  {name: 'muc#roomconfig_persistentroom', value: '1'} // The room is persistent (exists even there isnt any online members)
  ```
-Example for private room:
+Example for private room fields:
 
-```
+```js
 {name: 'muc#roomconfig_publicroom', value: '0'}, // 0 means private, 1 means public
 {name: 'muc#roomconfig_membersonly', value: '1'}, // If only the members are able to see the room
 {name: 'muc#roomconfig_allowinvites', value: '1'} // If it is allowed to send invites for entering in the room.
@@ -290,6 +290,8 @@ client.getBookmarks((err, data)=> {
 ##### `client.removeBookmark(jid, [cb])`
 
 > Remove bookmark for the jid.
+
+
 ##### `client.setBookmarks(opts)`
 Set bundle of bookmarks at once.
 
